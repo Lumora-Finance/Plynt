@@ -12,7 +12,14 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     tailwindcss(),
-    TanStackRouterVite({ autoCodeSplitting: true }),
+    // addHmr disabled: Vite 8 SSR module runner does not inject
+    // TSRSplitComponent into the SSR environment, causing a ReferenceError
+    // on every route, and a "Duplicate declaration hot" Babel error on HMR.
+    // Disable until upstream fix lands (vitejs/vite#21889).
+    TanStackRouterVite({
+      autoCodeSplitting: true,
+      codeSplittingOptions: { addHmr: false },
+    }),
     tanstackStart({
       server: { entry: "server" },
     }),
@@ -20,10 +27,5 @@ export default defineConfig({
   ],
   build: {
     target: "esnext",
-  },
-  // Vercel deployment target (matches vercel.json)
-  // @ts-expect-error - nitro types not exposed directly
-  nitro: {
-    preset: "vercel",
   },
 });

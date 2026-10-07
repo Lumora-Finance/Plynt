@@ -37,7 +37,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "./theme-toggle";
 import { mockUser } from "@/data/mockUsers";
 import { mockWallet } from "@/data/mockWallet";
@@ -81,7 +81,7 @@ const titles: Record<string, string> = {
 function Brand() {
   return (
     <div className="flex h-16 items-center gap-3 px-5">
-      <img src="/plynt_logo.png" alt="PLYNT" className="size-11 object-contain" />
+      <img src="/plynt_logoo.png" alt="PLYNT" className="size-11 object-contain" />
       <div>
         <p className="font-semibold leading-none">PLYNT</p>
         <p className="mt-1 text-xs text-muted-foreground">AI Financial Workspace</p>
@@ -129,6 +129,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const segment = path.split("/")[1] || "dashboard";
 
+  // Landing page: render without nav chrome
+  if (path === "/") {
+    return <>{children}</>;
+  }
+
   // Mobile nav: show 5 most important routes
   const mobileNav = [
     { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -139,14 +144,84 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen text-foreground bg-background">
+      {/* ── Backdrop ── */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          maskImage: "linear-gradient(to right, transparent 0, #000 min(300px, 32%), #000 calc(100% - min(300px, 32%)), transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0, #000 min(300px, 32%), #000 calc(100% - min(300px, 32%)), transparent 100%)",
+        }}
+        aria-hidden="true"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0, #000 min(380px, 45%))",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0, #000 min(380px, 45%))",
+          }}
+        >
+          {/* Radial gradient base — dark vs light */}
+          <div
+            className="absolute inset-0 isolate dark:block hidden"
+            style={{
+              backgroundImage: "radial-gradient(ellipse 2003.55px 741.89px at 50% calc(100% - 354.135px + 25%), rgb(20, 22, 36) 0%, rgb(13, 14, 21) 37.26%, rgb(8, 11, 14) 55.89%, rgb(5, 7, 6) 74.52%)",
+            }}
+          >
+            <div
+              className="absolute inset-0 mix-blend-soft-light"
+              style={{
+                backgroundImage: "url(/banner-noise.webp)",
+                backgroundSize: "180px auto",
+                backgroundPosition: "0 100%",
+                opacity: 0.8,
+              }}
+            />
+          </div>
+          <div
+            className="absolute inset-0 isolate dark:hidden block"
+            style={{
+              backgroundImage: "radial-gradient(ellipse 2003.55px 741.89px at 50% calc(100% - 354.135px + 25%), rgb(225, 222, 255) 0%, rgb(235, 232, 255) 37.26%, rgb(244, 244, 248) 55.89%, rgb(244, 244, 248) 74.52%)",
+            }}
+          >
+            <div
+              className="absolute inset-0 mix-blend-soft-light"
+              style={{
+                backgroundImage: "url(/banner-noise.webp)",
+                backgroundSize: "180px auto",
+                backgroundPosition: "0 100%",
+                opacity: 0.3,
+              }}
+            />
+          </div>
+          {/* Grid lines — darker in light mode */}
+          <div
+            className="absolute inset-0 dark:hidden"
+            style={{
+              backgroundImage: "linear-gradient(to right, rgba(0,0,0,0.07) 0 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.07) 0 1px, transparent 1px)",
+              backgroundSize: "80px 80px",
+              backgroundPosition: "0 100%",
+              opacity: 0.5,
+            }}
+          />
+          <div
+            className="absolute inset-0 hidden dark:block"
+            style={{
+              backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.09) 0 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.09) 0 1px, transparent 1px)",
+              backgroundSize: "80px 80px",
+              backgroundPosition: "0 100%",
+              opacity: 0.2,
+            }}
+          />
+        </div>
+      </div>
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-sidebar lg:flex">
         <Brand />
         <Navigation />
       </aside>
 
-      <div className="lg:pl-64">
+      <div className="relative z-10 lg:pl-64">
         {/* Header */}
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur-xl md:px-6">
           <div className="flex items-center gap-3">
@@ -204,6 +279,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" className="min-h-11 min-w-11" aria-label="Profile">
                       <Avatar className="size-8">
+                        <AvatarImage src={mockUser.avatar} alt={mockUser.name} />
                         <AvatarFallback>{mockUser.initials}</AvatarFallback>
                       </Avatar>
                     </Button>

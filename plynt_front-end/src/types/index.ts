@@ -86,6 +86,8 @@ export interface User {
   joinedAt: string;
   initials: string;
   role: string;
+  avatar?: string;
+  avatarAnimated?: string;
 }
 
 export interface AnalyticsPoint {

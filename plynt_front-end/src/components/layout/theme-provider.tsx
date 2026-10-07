@@ -8,7 +8,7 @@ const ThemeContext = createContext<{ theme: Theme; setTheme: (theme: Theme) => v
 });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
+  const [theme, setThemeState] = useState<Theme>("dark");
 
   useEffect(() => {
     const saved = localStorage.getItem("plynt-theme") as Theme | null;
