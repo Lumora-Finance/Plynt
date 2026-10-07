@@ -1,7 +1,3 @@
 {
-  "buildCommand": "npm run build",
-  "framework": null,
-  "env": {
-    "NITRO_PRESET": "vercel"
-  }
+  "framework": "tanstack-start"
 }
