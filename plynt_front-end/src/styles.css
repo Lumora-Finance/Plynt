@@ -255,7 +255,7 @@
   border-radius: 4px;
   background-color: #080810;
   background-image: url('/banner-blocks-phone.webp');
-  background-size: 100% auto;
+  background-size: cover;
   background-position: bottom center;
   background-repeat: no-repeat;
   padding: 1.5rem;
@@ -264,9 +264,6 @@
   border: 1px solid rgba(255,255,255,0.08);
 }
 .wallet-hero > * { position: relative; z-index: 1 }
-@media (min-width: 640px) {
-  .wallet-hero { align-items: flex-end; flex-direction: row; padding: 2rem }
-}
 @media (min-width: 640px) {
   .wallet-hero { align-items: flex-end; flex-direction: row; padding: 2rem }
 }
